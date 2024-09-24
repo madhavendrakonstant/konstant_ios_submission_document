@@ -55,20 +55,6 @@ const OptionInput = ({handleinput,inputvalue,id,Question,validation,required,opt
     
 
     return (
-        <div className='question-box p-4 md:p-8 bg-primary100 w-full lg:mb-12 gap-4 flex flex-col lg:rounded-custom-xl'>
-             <div className="question-container flex gap-4 justify-start p2 items-start">
-                <h1 className="text-label-sm lg:text-label  text-primary font-medium text-white  h-7 w-7 lg:h-10 lg:w-10 rounded-custom-full bg-primary flex items-center justify-center leading-100">
-                    {parseInt(id.replace(/[^\d]/g, ''), 10)}
-                </h1>
-                <h2 className='text-label-sm lg:text-label font-medium text-gray-800 flex-1 flex gap-2'>{Question} {required && <span className="text-red-600 font-bold">*</span>}
-
-                {info !== '' ?  <Tippy content={info}>
-                        <button><i className='ri-information-line text-primary text-label'></i> </button>
-                    </Tippy> : null
-
-                        }
-                </h2>
-            </div>
 
             <div className="answer-container flex gap-4 justify-start p2 items-start">
                 <h1 className="text-subtitle text-primary font-medium text-white h-10 w-10 rounded-custom-full bg-primary hidden lg:flex items-center justify-center leading-100 opacity-0">
@@ -78,9 +64,6 @@ const OptionInput = ({handleinput,inputvalue,id,Question,validation,required,opt
                 {options_cards_html}
                 </div>
             </div>
-       
-  
-        </div>
     )
 
 

@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 
 
-import form_fields from './json/app_questions';
+import form_fields from './json/IOS_submission_form';
 
 import Button from './components/button';
 import logo from './assets/logo.png';
@@ -17,7 +17,6 @@ import element from './assets/elements.png'
 
 function App() {
 
-  const [entry_fields, setentry_fields] = useState([])
 
   const [nav_open, setnavOpen] = useState(null)
 
@@ -27,7 +26,7 @@ function App() {
 
   const [validation_active, setvalidation_active] = useState(false)
 
-  const [Question_type] = useState('For App')
+  const [Question_type] = useState('For IOS')
 
  const navigate = useNavigate()
 
@@ -228,10 +227,10 @@ function App() {
 };
 
   const form_data = loaded ? form_fields.map((section, sectionIndex) => (
-                        <Element name={section.title} key={sectionIndex} className="section py-4">
-                           <h1 className='text-label-sm lg:text-title font-semibold text-gray-700 m-0 p-0 px-2 lg:px:0 pb-2 lg:pb-5'>{section.title}</h1>
+                        <Element name={section.title} key={sectionIndex} className="section lg:py-4 md:grid md:grid-cols-2 gap-x-4 gap-y-8">
+                           <h1 className='text-label lg:text-title font-semibold text-gray-700 m-0 p-0 px-2 lg:px:0 col-span-2 text-center lg:text-left py-4 lg:py-0'>{section.title}</h1>
                           {section.data.map((field,index) => (
-                             <Inputbox errormsg={errormsg} validation={validation_active} data={field} index={index} key={field.id} inputvalue={extractValueById} submitdetails={submit_data} />
+                             <Inputbox errormsg={errormsg} validation={validation_active} data={field} index={index} key={index} inputvalue={extractValueById} submitdetails={submit_data} />
                           ))}
                         </Element>
                       )) : null;
@@ -240,7 +239,7 @@ function App() {
 
   const indexing_data = form_fields.map((section, sectionIndex) => (
 
-      <li className='w-full py-2 px-0 border-b-2 border-grey-300 hover:bg-gray-100  text-left' key={section.key}>
+      <li className='w-full py-2 px-0 border-b-2 border-grey-300 hover:bg-gray-100  text-left' key={sectionIndex}>
           <button className={get_title_progress(section.title).required == 1  ? 'text-green-700 hover:text-primary hover:bg-gray-100 text-indexlink flex justify-between items-center gap-2 w-full relative py-2 px-4 text-left' : 'text-gray-500 hover:text-primary hover:bg-gray-100 text-indexlink flex justify-between items-center gap-2 w-full relative py-2 px-4 text-left'}
           onClick={() => scrollToSection(section.title)}
           >
@@ -273,12 +272,15 @@ function App() {
   return (
     <>
     <ToastContainer />
-    <section className='form-banner-area flex w-full mx-auto h-banner_mobile lg:h-banner bg-primary relative items-center justify-center gap-10 px-30'>
+    <section className='form-banner-area flex w-full mx-auto h-banner_mobile lg:h-banner bg-primary relative items-center justify-center gap-10 px-4 lg:px-30'>
         <img src={element} className='w-48 absolute top-0 right-0 z-10' alt='image' />
         <img src={logo} className='w-52 relative z-50 hidden' alt='logo' />
-        <div className='w-full flex flex-col  items-center text-left gap-0 justify-center'>
-            <h1 className='text-label lg:text-largetitle  text-white font-bold text-left'>Konstant DQ 2024</h1>
-            <h5 className='text-white text-label lg:text-title rounded-custom-full border border-white inline-block py-2 px-5 lg:py-2 lg:px-10 border-opacity-50 w-fit'>{Question_type}</h5>
+        <div className='w-full flex flex-col  items-center text-left gap-2 lg:gap-0 justify-center z-50'>
+            <h1 className='text-label lg:text-largetitle  text-white font-bold text-left'>Konstant App submission</h1>
+            <h5 className='px-4 items-center text-white text-label lg:text-title rounded-custom-full flex gap-4 border border-white inline-block py-2 px-2 lg:py-2 lg:px-6 border-opacity-50 w-fit'>
+            <i className='ri-apple-fill text-white text-label lg:text-title'></i>
+            {Question_type}
+            </h5>
         </div>
 
     </section>
@@ -290,7 +292,7 @@ function App() {
 
        
 
-        <div className='main-sidebar flex flex-col flex-1  basis-4/4 lg:basis-1/4 sticky w-full top-0 bg-white lg:h-4/4-screen pt-4 lg:max-w-sm'>
+        <div className='main-sidebar flex flex-col flex-1  basis-4/4 lg:basis-1/4 sticky w-full top-0 bg-white lg:h-4/4-screen pt-4 lg:max-w-sm z-50'>
 
           <button 
             className='border-b-2 border-primary py-4 flex justify-between items-center w-full active:bg-primary100 px-4'
@@ -305,23 +307,13 @@ function App() {
                   {indexing_data}
                 </ul>
             </div>
-{/* 
-            <div className='form-submission flex flex-col gap-2 p-2 mt-auto mb-3'>
-              <button className='w-full p-3 bg-primary text-white block rounded-custom-md'>
-                Submit & print
-              </button>
-
-              <button className='w-full p-2 bg-gray-600 text-white block rounded-custom-md'>
-                Save
-              </button>
-            </div> */}
 
         </div>
 
       {/* form container */}
-        <div className='main-form-content flex-1 basis-4/4 w-full lg:basis-3/4 bg-white bg-white lg:py-5 lg:mb-10 lg:px-8 lg:rounded-custom-md shadow-md lg:m-8  mb-32'>
+        <div className='main-form-content flex-1 basis-4/4 w-full lg:basis-3/4 lg:py-5 lg:m-8  mb-32'>
 
-        <div className='form-submission flex flex-row gap-2 mt-auto mb-3 top-0 border-b border-gray-100 bg-white py-2 items-center justify-center'>
+        <div className='form-submission flex flex-row gap-2 mt-auto mb-3 top-0 py-2 items-center justify-center'>
               <div className='user-information text-center'>
                 <h2 className='text-title2 text-primary font-semibold'>Paul Holmes</h2>
                 <p className='text-caption text-primary'>Please fill all of details to get started!</p>
@@ -335,14 +327,14 @@ function App() {
 
     </section>
 
-    <section className='submit-buttons-container fixed bottom-0 left-0 right-0 p-4 flex items-center justify-center bg-white z-10'>
+    <section className='submit-buttons-container fixed bottom-0 left-0 right-0 p-4 flex items-center justify-center bg-white z-50'>
 
         <div className='main-form-container flex flex-col lg:flex-row justify-between gap-4'>
 
-            <button class="py-2 px-6 bg-gray-100 text-gray-700 inline-block rounded-custom-sm border-2 border-gray-200 font-semibold capitalize"
+            <button className="py-2 px-6 bg-gray-100 text-gray-700 inline-block rounded-custom-sm border-2 border-gray-200 font-semibold capitalize"
             onClick={saveDataToLocal}
             >Save details</button>
-            <button class="py-2 px-10 bg-primary text-white inline-block rounded-custom-sm shadow-inner-sm font-semibold capitalize shadow-md"
+            <button className="py-2 px-10 bg-primary text-white inline-block rounded-custom-sm shadow-inner-sm font-semibold capitalize shadow-md"
             onClick={() => submitForm(titles)}
             >Submit & Export PDF</button>
 

@@ -6,11 +6,15 @@ body {
   margin: 0;
   padding: 0;
   text-decoration: none;
-  background: #ECF1F7;
+  background: #F5F5F7;
   min-height: 100vh;
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter", sans-serif;
   transition: all 0.3s;
 }
+
+/* * {
+  outline: 1px solid green !important;
+} */
 
 .main-form-container {
   width: 100%;
@@ -31,4 +35,8 @@ textarea:focus {
 
 .photoshop-picker, .photoshop-picker > div {
   background: white !important;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
 }

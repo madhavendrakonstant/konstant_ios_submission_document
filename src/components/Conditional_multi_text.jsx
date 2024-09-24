@@ -163,9 +163,9 @@ const Conditional_multi_text = ({handleinput,inputvalue,id,Question,validation,r
 
     return (
         <>
-        <div className='question-box p-4 md:p-8 bg-primary100 w-full lg:mb-12 gap-4 flex flex-col lg:rounded-custom-xl'>
+        <div className='question-box p-4 md:p-8 bg-white w-full lg:mb-12 gap-4 flex flex-col lg:rounded-custom-xl relative z-40'>
             <div className="question-container flex gap-4 justify-start p2 items-start">
-                <h1 className="text-label-sm lg:text-label  text-primary font-medium text-white  h-7 w-7 lg:h-10 lg:w-10 rounded-custom-full bg-primary flex items-center justify-center leading-100">
+              <h1 className="text-label-sm lg:text-label  text-primary font-medium text-primary  h-7 w-7 lg:h-10 lg:w-10 rounded-custom-full bg-white flex items-center justify-center leading-100 border border-primary200">
                     {parseInt(id.replace(/[^\d]/g, ''), 10)}
                 </h1>
                 <h2 className='text-label-sm lg:text-label font-medium text-gray-800 flex-1 flex gap-2'>{Question} {required && <span className="text-red-600 font-bold">*</span>}
@@ -251,7 +251,7 @@ const Conditional_multi_text = ({handleinput,inputvalue,id,Question,validation,r
 
                         </div>
                         {
-                            suggestions_active ? <ul className="suggestions flex flex-col gap-0 m-0 p-0 bg-white rounded-b-lg overflow-hidden" ref={suggestion_ref}>
+                            suggestions_active ? <ul className="suggestions flex flex-col gap-0 m-0 p-0 bg-white rounded-b-lg overflow-hidden z-50" ref={suggestion_ref}>
                             {suggestions_loop}
                              </ul> : null
                         }

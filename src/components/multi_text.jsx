@@ -13,24 +13,43 @@ const Multi_text = ({handleinput,inputvalue,id,Question,validation,required,plac
     const [currentSuggestion, set_currentSuggestion] = useState([])
     const [suggestions_active, set_suggestions_active] = useState(false)
 
+    const [activeSuggestion, setActiveSuggestion] = useState(-1); // Index of the active suggestion
+
     const suggestion_ref = useRef(null)
     const input_ref = useRef(null)
 
 
 
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowDown') {
 
-          if(currentSuggestion.length == 1) {
-            handleSubmit(currentSuggestion[0]);
-          }
-          else {
-            handleSubmit(inputValue);
-          }
+          setActiveSuggestion((prevIndex) => 
+              prevIndex < currentSuggestion.length - 1 ? prevIndex + 1 : prevIndex
+          );
+
+          console.log('arrow down')
+
+          console.log(activeSuggestion)
+
+
+      } else if (e.key === 'ArrowUp') {
+
+          setActiveSuggestion((prevIndex) => 
+              prevIndex > 0 ? prevIndex - 1 : 0
+          );
+      } else if (e.key === 'Enter') {
+
+        // console.log(currentSuggestion[activeSuggestion])
+
+        if(activeSuggestion == -1) {
+          handleSubmit(inputValue);
+        }
+        else {
+          handleSubmit(currentSuggestion[activeSuggestion]);
         }
 
-
-      };
+      }
+  };
 
 
       const handleSubmit = (value) => {
@@ -51,9 +70,18 @@ const Multi_text = ({handleinput,inputvalue,id,Question,validation,required,plac
         let current_multiSelect = [...multi_text_value];
     
         current_multiSelect.push(value.trim());
-    
-        set_multi_text_value(current_multiSelect);
-        setInputValue('');
+
+
+        if(limit == 1) {
+          setInputValue(value)
+          set_multi_text_value([]);
+        }
+        else {
+          set_multi_text_value(current_multiSelect);
+          setInputValue('');
+          console.log('this one')
+        }
+
     
         const formattedValue = current_multiSelect.length > 1 ? current_multiSelect.join(', ') : current_multiSelect[0] || '';
 
@@ -69,6 +97,7 @@ const Multi_text = ({handleinput,inputvalue,id,Question,validation,required,plac
         let current_multiSelect = [...multi_text_value]
         current_multiSelect = current_multiSelect.filter(items => items !== value)
         set_multi_text_value(current_multiSelect)
+        console.log('this one 2')
 
         const formattedValue = current_multiSelect.length > 1 ? current_multiSelect.join(', ') : current_multiSelect[0] || '';
         handleinput(formattedValue);
@@ -93,7 +122,8 @@ const Multi_text = ({handleinput,inputvalue,id,Question,validation,required,plac
 
 
 
-    useEffect(() => {
+ 
+      useEffect(() => {
 
         if(!suggestions || suggestions.length < 1) return
 
@@ -121,8 +151,13 @@ const Multi_text = ({handleinput,inputvalue,id,Question,validation,required,plac
         set_multi_text_value(current_entry)
 
         console.log('array set')
-    },[inputValue])
 
+       if(inputValue.length < 2) {
+        setActiveSuggestion(-1)
+       }
+
+
+    },[inputValue])
 
 
     const multiSelect_cards_html = multi_text_value.length > 0 && inputvalue !== '' ? multi_text_value
@@ -140,8 +175,9 @@ const Multi_text = ({handleinput,inputvalue,id,Question,validation,required,plac
 
 
     const suggestions_loop = currentSuggestion.length > 0 ? currentSuggestion.map((list,index)=> {
+      const isActive = index === activeSuggestion;
         return (
-            <li className="w-full border-b-2 border-b-gray-100" key={index}>
+            <li className={`w-full border-b-2 border-b-gray-100 ${isActive ? 'bg-gray-200' : ''}`} key={index}>
                                 <button className="py-4 px-4 text-gray-700 text-input-sm hover:bg-gray-100 w-full text-left"
                                 onClick={() => handleSubmit(list)}
                                 >
@@ -153,36 +189,23 @@ const Multi_text = ({handleinput,inputvalue,id,Question,validation,required,plac
 
     return (
         <>
-        <div className='question-box p-4 md:p-8 bg-primary100 w-full lg:mb-12 gap-4 flex flex-col lg:rounded-custom-xl'>
-            <div className="question-container flex gap-4 justify-start p2 items-start">
-                <h1 className="text-label-sm lg:text-label  text-primary font-medium text-white  h-7 w-7 lg:h-10 lg:w-10 rounded-custom-full bg-primary flex items-center justify-center leading-100">
-                    {parseInt(id.replace(/[^\d]/g, ''), 10)}
-                </h1>
-                <h2 className='text-label-sm lg:text-label font-medium text-gray-800 flex-1 flex gap-2'>{Question} {required && <span className="text-red-600 font-bold">*</span>}
-
-                {info !== '' ?  <Tippy content={info}>
-                        <button><i className='ri-information-line text-primary text-label'></i> </button>
-                    </Tippy> : null
-      
-                        }
-                </h2>
-            </div>
+     
  
-            <div className="answer-container flex gap-4 justify-start p2 items-start">
+            <div className="answer-container flex gap-4 justify-start p2 items-start relative z-40">
                 <h1 className="text-subtitle text-primary font-medium text-white h-10 w-10 rounded-custom-full bg-primary hidden lg:flex items-center justify-center leading-100 opacity-0">
                     A.
                 </h1>
                 <div className="flex flex-col gap-4 w-full">
 
 
-                    <div className="seach-container" ref={suggestion_ref} onBlur={handleInputBlur}> 
+                    <div className="seach-container relative" ref={suggestion_ref} onBlur={handleInputBlur}> 
 
                         <div className="input-container relative w-full">
                             <input type="text" 
                             className={
                                 inputvalue !== '' || validation !== true || !required ? 
-                                "border-b-2 border-b-gray-300 w-full bg-white text-gray-600 placeholder-gray-500 focus:ring-2 focus:ring-primary-200 focus:rounded-t-md rounded-t-md hover:ring-1 hover:ring-primary-300 px-4 py-4 text-input-sm lg:text-input rounded-b-none"
-                                : "w-full bg-white text-gray-600 placeholder-gray-500 ring-2 ring-red-500 focus:ring-2 focus:ring-primary-200 focus:rounded-t-md rounded-t-md hover:ring-1 hover:ring-primary-300 px-4 py-4 text-input-sm lg:text-input rounded-b-none"
+                                "w-full bg-white text-gray-600 placeholder-gray-500 border-b border-primary200 focus:border-b-2 focus:border-primary hover:border-b-2 hover:border-gray-600 py-4 text-input-sm lg:text-input focus-visible:outline-none"
+                                : "w-full bg-white text-gray-600 placeholder-gray-500 border-b border-primary200 focus:border-b-2 border-b-2 border-red-600 focus:border-primary hover:border-b-2 hover:border-gray-600 py-4 text-input-sm lg:text-input focus-visible:outline-none"
                             }
                             name="value_items"
                             placeholder={placeholder}
@@ -196,12 +219,12 @@ const Multi_text = ({handleinput,inputvalue,id,Question,validation,required,plac
                             <button className="w-10 h-10 flex items-center justify-center absolute right-4 top-1/2 transform -translate-y-1/2"
                             onClick={()=> handleSubmit(inputValue)}
                             >
-                                <i className='ri-add-large-fill text-gray-700 text-label text-gray-300'></i> 
+                                <i className={limit == 1 ? 'ri-arrow-down-s-line text-gray-700 text-label text-gray-300' : 'ri-add-large-fill text-gray-700 text-label text-gray-300'}></i> 
                             </button>
 
                         </div>
                         {
-                            suggestions_active ? <ul className="suggestions flex flex-col gap-0 m-0 p-0 bg-white rounded-b-lg overflow-hidden" ref={suggestion_ref}>
+                            suggestions_active ? <ul className="suggestions flex flex-col gap-0 m-0 bg-white rounded-b-lg overflow-hidden shadow-ios absolute w-full z-50" ref={suggestion_ref}>
                             {suggestions_loop}
                              </ul> : null
                         }
@@ -219,7 +242,6 @@ const Multi_text = ({handleinput,inputvalue,id,Question,validation,required,plac
 
 
             </div>
-        </div>
         </>
     )
 

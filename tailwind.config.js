@@ -7,11 +7,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#1A2B83',   
-        secondary: '#F59E0B',
-        primary100: '#ECF1F7',
-        primary200: '#B2BEFF',
-        primary300: '#374EC2'
+        primary: '#1d1d1f',   
+        primary100: '#FAFAFA',
+        primary200: '#C6C6C8',
+        primary300: '#3C3C3C'
       },
       spacing: {
         '2': '0.5rem',
@@ -58,7 +57,8 @@ export default {
 
       maxWidth: {
         '70ch': '70ch',
-        'thankyou': '1200px'
+        'thankyou': '1200px',
+        'tab' : '500px'
       },
 
       fontSize: {
@@ -82,18 +82,34 @@ export default {
         'inner-lg': 'inset 0 10px 15px rgba(0, 0, 0, 0.1)',
         'bottom-bar' : '0px 10px -10px 0px rgba(35, 66, 177, 0.10)',
         'custom-light': '0px 4px 6px rgba(0, 0, 0, 0.1)',
+        'ios' : '0px 4px 20px 0px rgba(0, 0, 0, 0.10)'
       },
       lineHeight: {
         '100': '100%',
         '120' : '120%',
-        '150' : '150%'
+        '150' : '150%',
+        'initial': 'initial'
       },
       borderOpacity: {
         '50': '0.25',
       },
+      flex: {
+        '2': '2 2 0%',
+        '3': '3 3 0%',
+      },
 
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.custom-avoid-break': {
+          'word-break': 'keep-all',
+          'overflow-wrap': 'break-word',
+        },
+      }
+      addUtilities(newUtilities, ['responsive', 'hover'])
+    },
+  ],
 }
 
